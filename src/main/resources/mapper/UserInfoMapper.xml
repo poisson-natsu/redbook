@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.natsu.dao.UserInfoMapper">
+  <resultMap id="BaseResultMap" type="com.natsu.bean.UserInfo">
+    <id column="userid" jdbcType="INTEGER" property="userid" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="usergender" jdbcType="VARCHAR" property="usergender" />
+    <result column="userphone" jdbcType="VARCHAR" property="userphone" />
+    <result column="userpwd" jdbcType="VARCHAR" property="userpwd" />
+    <result column="userbirthday" jdbcType="DATE" property="userbirthday" />
+    <result column="usersignature" jdbcType="VARCHAR" property="usersignature" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.natsu.bean.UserInfo">
+    <result column="userpic" jdbcType="LONGVARBINARY" property="userpic" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    userid, username, usergender, userphone, userpwd, userbirthday, usersignature
+  </sql>
+  <sql id="Blob_Column_List">
+    userpic
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.natsu.bean.UserInfoExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from userinfo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.natsu.bean.UserInfoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from userinfo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from userinfo
+    where userid = #{userid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from userinfo
+    where userid = #{userid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.natsu.bean.UserInfoExample">
+    delete from userinfo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.natsu.bean.UserInfo">
+    insert into userinfo (userid, username, usergender, 
+      userphone, userpwd, userbirthday, 
+      usersignature, userpic)
+    values (#{userid,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{usergender,jdbcType=VARCHAR}, 
+      #{userphone,jdbcType=VARCHAR}, #{userpwd,jdbcType=VARCHAR}, #{userbirthday,jdbcType=DATE}, 
+      #{usersignature,jdbcType=VARCHAR}, #{userpic,jdbcType=LONGVARBINARY})
+  </insert>
+  <insert id="insertSelective" parameterType="com.natsu.bean.UserInfo">
+    insert into userinfo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userid != null">
+        userid,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="usergender != null">
+        usergender,
+      </if>
+      <if test="userphone != null">
+        userphone,
+      </if>
+      <if test="userpwd != null">
+        userpwd,
+      </if>
+      <if test="userbirthday != null">
+        userbirthday,
+      </if>
+      <if test="usersignature != null">
+        usersignature,
+      </if>
+      <if test="userpic != null">
+        userpic,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="usergender != null">
+        #{usergender,jdbcType=VARCHAR},
+      </if>
+      <if test="userphone != null">
+        #{userphone,jdbcType=VARCHAR},
+      </if>
+      <if test="userpwd != null">
+        #{userpwd,jdbcType=VARCHAR},
+      </if>
+      <if test="userbirthday != null">
+        #{userbirthday,jdbcType=DATE},
+      </if>
+      <if test="usersignature != null">
+        #{usersignature,jdbcType=VARCHAR},
+      </if>
+      <if test="userpic != null">
+        #{userpic,jdbcType=LONGVARBINARY},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.natsu.bean.UserInfoExample" resultType="java.lang.Long">
+    select count(*) from userinfo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update userinfo
+    <set>
+      <if test="record.userid != null">
+        userid = #{record.userid,jdbcType=INTEGER},
+      </if>
+      <if test="record.username != null">
+        username = #{record.username,jdbcType=VARCHAR},
+      </if>
+      <if test="record.usergender != null">
+        usergender = #{record.usergender,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userphone != null">
+        userphone = #{record.userphone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userpwd != null">
+        userpwd = #{record.userpwd,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userbirthday != null">
+        userbirthday = #{record.userbirthday,jdbcType=DATE},
+      </if>
+      <if test="record.usersignature != null">
+        usersignature = #{record.usersignature,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userpic != null">
+        userpic = #{record.userpic,jdbcType=LONGVARBINARY},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update userinfo
+    set userid = #{record.userid,jdbcType=INTEGER},
+      username = #{record.username,jdbcType=VARCHAR},
+      usergender = #{record.usergender,jdbcType=VARCHAR},
+      userphone = #{record.userphone,jdbcType=VARCHAR},
+      userpwd = #{record.userpwd,jdbcType=VARCHAR},
+      userbirthday = #{record.userbirthday,jdbcType=DATE},
+      usersignature = #{record.usersignature,jdbcType=VARCHAR},
+      userpic = #{record.userpic,jdbcType=LONGVARBINARY}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update userinfo
+    set userid = #{record.userid,jdbcType=INTEGER},
+      username = #{record.username,jdbcType=VARCHAR},
+      usergender = #{record.usergender,jdbcType=VARCHAR},
+      userphone = #{record.userphone,jdbcType=VARCHAR},
+      userpwd = #{record.userpwd,jdbcType=VARCHAR},
+      userbirthday = #{record.userbirthday,jdbcType=DATE},
+      usersignature = #{record.usersignature,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.natsu.bean.UserInfo">
+    update userinfo
+    <set>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="usergender != null">
+        usergender = #{usergender,jdbcType=VARCHAR},
+      </if>
+      <if test="userphone != null">
+        userphone = #{userphone,jdbcType=VARCHAR},
+      </if>
+      <if test="userpwd != null">
+        userpwd = #{userpwd,jdbcType=VARCHAR},
+      </if>
+      <if test="userbirthday != null">
+        userbirthday = #{userbirthday,jdbcType=DATE},
+      </if>
+      <if test="usersignature != null">
+        usersignature = #{usersignature,jdbcType=VARCHAR},
+      </if>
+      <if test="userpic != null">
+        userpic = #{userpic,jdbcType=LONGVARBINARY},
+      </if>
+    </set>
+    where userid = #{userid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.natsu.bean.UserInfo">
+    update userinfo
+    set username = #{username,jdbcType=VARCHAR},
+      usergender = #{usergender,jdbcType=VARCHAR},
+      userphone = #{userphone,jdbcType=VARCHAR},
+      userpwd = #{userpwd,jdbcType=VARCHAR},
+      userbirthday = #{userbirthday,jdbcType=DATE},
+      usersignature = #{usersignature,jdbcType=VARCHAR},
+      userpic = #{userpic,jdbcType=LONGVARBINARY}
+    where userid = #{userid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.natsu.bean.UserInfo">
+    update userinfo
+    set username = #{username,jdbcType=VARCHAR},
+      usergender = #{usergender,jdbcType=VARCHAR},
+      userphone = #{userphone,jdbcType=VARCHAR},
+      userpwd = #{userpwd,jdbcType=VARCHAR},
+      userbirthday = #{userbirthday,jdbcType=DATE},
+      usersignature = #{usersignature,jdbcType=VARCHAR}
+    where userid = #{userid,jdbcType=INTEGER}
+  </update>
+</mapper>
